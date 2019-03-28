@@ -1,0 +1,193 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/babel">
+		class TestComponent extends React.Component {
+			constructor(props){
+				super(props);
+
+				var itemList = [
+					{ name: 'Pegion', src: 'img/Pegion.jpg', type: 'Bird' },
+					{ name: 'Peacock', src: 'img/Peacock.jpg', type: 'Bird' },
+					{ name: 'Lion', src: 'img/Lion.jpg', type: 'Animal' },
+					{ name: 'Rabit', src: 'img/Rabit.jpg', type: 'Animal' },
+					{ name: 'Sunflower', src: 'img/Sunflower.jpg', type: 'Flower' },
+					{ name: 'Rose', src: 'img/Rose.jpg', type: 'Flower' },
+					{ name: 'Tiger', src: 'img/Tiger.jpg', type: 'Animal'},
+					{ name: 'The Friendly Dog', src:'img/theFrindlyDog.jpg', type: 'Animal'},
+					{ name: 'Jasmine', src:'img/Jasmine.jpg', type: 'Flower'},
+					{ name: 'Sparrow', src:'img/Sparrow.jpg', type: 'Bird' },
+					{ name: 'Parrot', src:'img/Parrot.jpg', type: 'Bird'},
+					{ name: 'Lavender', src:'img/Lavender.jpg', type: 'Flower'},
+					{ name: 'Nemo', src:'img/Nemo.jpg', type: 'Fish'},
+					{ name: 'Goldie', src:'img/Goldie.jpg', type: 'Fish'},
+					{ name: 'Seahorse', src:'img/Seahorse.jpg', type: 'Fish'}
+				];
+
+				this.state = {
+					itemList: itemList,
+					cloneitemList: itemList
+				}
+			}
+
+			onRefresh(){
+				alert('Animals Button is clicked');
+
+				var filtereditemList = [
+					{ name: 'Lion', src: 'img/Lion.jpg', type: 'Animal' },
+					{ name: 'Rabit', src: 'img/Rabit.jpg', type: 'Animal' },
+					{ name: 'Tiger', src: 'img/Tiger.jpg', type: 'Animal'},
+					{ name: 'The Friendly Dog', src:'img/theFrindlyDog.jpg', type: 'Animal'}
+				]
+
+				this.setState( { cloneitemList: filtereditemList });
+			}
+
+			onRefresh1(){
+				alert('Birds Button is clicked');
+
+				var filtereditemList = [
+					{ name: 'Pegion', src: 'img/Pegion.jpg', type: 'Bird' },
+					{ name: 'Peacock', src: 'img/Peacock.jpg', type: 'Bird' },
+					{ name: 'Sparrow', src:'img/Sparrow.jpg', type: 'Bird' },
+					{ name: 'Parrot', src:'img/Parrot.jpg', type: 'Bird'}
+				]
+
+				this.setState( { cloneitemList: filtereditemList });
+			}
+
+			onRefresh2(){
+				alert('Flowers Button is clicked');
+
+				var filtereditemList = [
+					{ name: 'Sunflower', src: 'img/Sunflower.jpg', type: 'Flower' },
+					{ name: 'Rose', src: 'img/Rose.jpg', type: 'Flower' },
+					{ name: 'Jasmine', src:'img/Jasmine.jpg', type: 'Flower'},
+					{ name: 'Lavender', src:'img/Lavender.jpg', type: 'Flower'}
+				]
+
+				this.setState( { cloneitemList: filtereditemList });
+			}
+
+			onRefresh3(){
+				alert('Fishes Button is clicked');
+				alert('Nothings is fishy!! No fishes ...')
+
+				var filtereditemList = [
+					{ name: 'Nemo', src:'img/Nemo.jpg', type: 'Fish'},
+					{ name: 'Goldie', src:'img/Goldie.jpg', type: 'Fish'},
+					{ name: 'Seahorse', src:'img/Seahorse.jpg', type: 'Fish'}
+				]
+
+				this.setState( { cloneitemList: filtereditemList });
+			}
+
+			onSearchBoxChange(event){
+				console.log(event.target.value);
+				var str = event.target.value;
+
+				var filtereditemList = [];
+
+				for(var student of this.state.itemList){
+					if(student.name.toLowerCase().indexOf(str.toLowerCase()) >= 0 || student.type.toLowerCase().indexOf(str.toLowerCase()) >= 0) {
+						filtereditemList.push(student);
+					}
+				}
+				this.setState( { cloneitemList: filtereditemList });
+
+			}
+
+			render() {
+				var items = [];
+
+				for(var student of this.state.cloneitemList) {
+					items.push(<tr className="row">
+									<div>
+									<br/>
+									<h2>{student.name} </h2>
+									<h4>{student.type} </h4>
+									<img src={student.src} alt= {student.name}  className="img-responsive"/>
+									</div>
+								</tr>);
+				}
+
+				return <div>
+						<h1>{this.props.title}</h1>
+						<br/>
+						<input type='text' value= '' onChange={this.onSearchBoxChange.bind(this)}/> Search
+						<br/><br/><br/>
+						<input type='button' className="button" value= 'Animals' onClick={this.onRefresh.bind(this)} />
+						<input type='button' className="button" value= 'Birds' onClick={this.onRefresh1.bind(this)} />
+						<input type='button' className="button" value= 'Flowers' onClick={this.onRefresh2.bind(this)} />
+						<input type='button' className="button" value= 'Fishes' onClick={this.onRefresh3.bind(this)} />
+						<table>
+							<tbody>
+								{items}
+							</tbody>
+						</table>
+					</div>;
+			}
+		}
+
+		function afterRender(){
+			ReactDOM.render(<TestComponent title='Search animal, birds, ...' />, document.getElementById('container'));
+		}
+
+	</script>
+</head>
+<body onLoad="afterRender()">
+	<div id="container">
+	</div>
+</body>
+<style>
+.button {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 15px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+.row{
+	text-align: center;
+}
+.img-responsive {
+	width: 60%;
+	height: 60vh;
+	border: 3px solid #73AD21;
+}
+
+</style>
+
+<script>
+			// An Attempt at trying on simple jquery and scroll method lazy loading
+
+
+			// $(".row div").slice(2).hide();
+			//
+		  // var mincount = 1;
+		  // var maxcount = 2;
+			//
+			//
+		  // $(window).scroll(function () {
+		  //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 2) {
+		  //         $(".row div").slice(mincount, maxcount).slideDown(40);
+			//
+		  //         mincount = mincount + 1;
+		  //         maxcount = maxcount + 2;
+			//
+		  //     }
+		  // });
+</script>
+
+
+</html>
